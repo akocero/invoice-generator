@@ -1,7 +1,9 @@
 <template>
 	<nav class="navbar navbar-expand-lg navbar-light bg-white">
 		<div class="container-fluid">
-			<a class="navbar-brand text-uppercase" href="#">papierenei</a>
+			<router-link to="/" class="navbar-brand"
+				><strong>papierenei</strong>
+			</router-link>
 			<button
 				class="navbar-toggler"
 				type="button"
