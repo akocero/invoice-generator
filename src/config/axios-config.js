@@ -2,7 +2,7 @@ import axios from 'axios';
 import store from '@/store';
 
 const axiosConfig = axios.create({
-	baseURL: process.env.VUE_APP_BASE_URL,
+	baseURL: 'https://papierenei.herokuapp.com/api/v1/',
 	headers: {
 		Authorization: `Bearer ${store.getters.getToken}`
 	}
