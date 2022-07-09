@@ -24,7 +24,9 @@
 						>
 					</li>
 					<li class="nav-item">
-						<router-link to="/customers" class="nav-link"
+						<router-link
+							:to="{ name: 'customers' }"
+							class="nav-link"
 							>Customers</router-link
 						>
 					</li>
@@ -44,15 +46,24 @@
 					</li>
 				</ul>
 				<ul class="navbar-nav">
-					<li class="nav-item">
+					<li class="nav-item" v-if="!user">
 						<router-link to="/signup" class="nav-link"
 							>Sign Up</router-link
 						>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" v-if="!user">
 						<router-link to="/login" class="nav-link"
 							>Log In</router-link
 						>
+					</li>
+					<li class="nav-item">
+						<a
+							class="nav-link text-danger"
+							role="button"
+							@click="logout"
+						>
+							Logout
+						</a>
 					</li>
 				</ul>
 			</div>
@@ -61,7 +72,25 @@
 </template>
 
 <script>
-export default {};
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+export default {
+	name: 'Navbar',
+	setup() {
+		const store = useStore();
+		const user = computed(() => store.getters.getUser);
+
+		const logout = () => {
+			if (confirm('Are you sure you want to sign out?')) {
+				store.commit('removeUser');
+				store.commit('removeToken');
+				window.location.reload();
+			}
+		};
+
+		return { logout, user };
+	}
+};
 </script>
 
 <style></style>

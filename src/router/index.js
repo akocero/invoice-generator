@@ -4,38 +4,62 @@ import Signup from '../views/Signup.vue';
 import Login from '../views/Login.vue';
 import Items from '../views/Items.vue';
 import CreateInvoice from '../views/CreateInvoice.vue';
-import Customers from '../views/Customers.vue';
+import Customers from '../views/customer/index.vue';
+import store from '@/store';
+
+const authRequired = (to, from, next) => {
+	const authorized = store.getters.getUser ? next() : next({ name: 'login' });
+};
+
+const noAuthRequired = (to, from, next) => {
+	const authorized = store.getters.getUser ? next({ name: 'home' }) : next();
+};
 
 const routes = [
 	{
-		path: '/',
-		name: 'home',
-		component: HomeView
-	},
-	{
-		path: '/items',
-		name: 'Items',
-		component: Items
-	},
-	{
-		path: '/customers',
-		name: 'Customers',
-		component: Customers
-	},
-	{
-		path: '/create-invoice',
-		name: 'CreateInvoice',
-		component: CreateInvoice
-	},
-	{
 		path: '/signup',
-		name: 'Signup',
-		component: Signup
+		name: 'signup',
+		component: Signup,
+		beforeEnter: noAuthRequired
 	},
 	{
 		path: '/login',
-		name: 'Login',
-		component: Login
+		name: 'login',
+		component: Login,
+		beforeEnter: noAuthRequired
+	},
+	{
+		path: '/app',
+		name: 'main',
+		component: () => import('@/components/Main'),
+		beforeEnter: authRequired,
+		children: [
+			{
+				path: '/',
+				name: 'home',
+				component: HomeView
+			},
+			{
+				path: '/items',
+				name: 'items',
+				component: Items
+			},
+			{
+				path: 'customers',
+				name: 'customers',
+				component: Customers
+			},
+			{
+				path: 'customers/create',
+				name: 'create-customer',
+				component: () => import('@/views/customer/create.vue')
+			},
+			{
+				path: '/create-invoice',
+				name: 'createInvoice',
+				component: CreateInvoice
+			}
+		]
 	},
 	{
 		path: '/about',
