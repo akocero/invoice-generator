@@ -29,7 +29,8 @@ const routes = [
 	{
 		path: '/app',
 		name: 'main',
-		component: () => import('@/components/Main'),
+		component: () =>
+			import(/* webpackChunkName: "about" */ '../components/Main.vue'),
 		beforeEnter: authRequired,
 		children: [
 			{
@@ -40,17 +41,26 @@ const routes = [
 			{
 				path: 'customers',
 				name: 'customers',
-				component: import('@/views/customer/index.vue')
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/customer/index.vue'
+					)
 			},
 			{
 				path: 'customers/create',
 				name: 'create-customer',
-				component: () => import('@/views/customer/create.vue')
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/customer/create.vue'
+					)
 			},
 			{
 				path: 'customers/edit/:id',
 				name: 'edit-customer',
-				component: () => import('@/views/customer/edit.vue')
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/customer/edit.vue'
+					)
 			},
 			{
 				path: 'items',
@@ -63,7 +73,10 @@ const routes = [
 			{
 				path: 'items/create',
 				name: 'create-item',
-				component: () => import('@/views/item/create.vue')
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/item/create.vue'
+					)
 			},
 			{
 				path: 'items/edit/:id',
