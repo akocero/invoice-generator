@@ -9,17 +9,17 @@
 					<div
 						class="d-flex justify-content-between align-items-baseline"
 					>
-						<h5 class="card-title mb-4">Create Customer</h5>
+						<h5 class="card-title mb-4">Edit Item</h5>
 						<router-link
 							class="btn btn-default"
-							:to="{ name: 'customers' }"
+							:to="{ name: 'items' }"
 							>Back</router-link
 						>
 					</div>
 					<div v-if="error" class="alert alert-danger" role="alert">
 						{{ error.message }}
 					</div>
-					<form @submit.prevent="handleSubmit">
+					<form @submit.prevent="handleSubmit" v-if="item">
 						<div class="row">
 							<!-- <div class="mb-3 col-6">
 								<label for="" class="form-label"
@@ -29,7 +29,7 @@
 									class="form-select"
 									aria-label="Default select example"
 									required
-									v-model="customer"
+									v-model="item.customer"
 								>
 									<option selected value="">Select...</option>
 
@@ -50,57 +50,44 @@
 									>First Name</label
 								>
 								<input
-									v-model="firstName"
+									v-model="item.name"
 									type="text"
 									class="form-control"
 									id="exampleFormControlInput1"
 								/> -->
 
 								<BaseInputField
-									id="input_code"
-									label="First Name"
-									v-model="firstName"
+									id="name"
+									label="Item Name"
+									v-model="item.name"
 									:error="error"
-									:errorField="
-										error?.errors?.firstName || null
-									"
+									:errorField="error?.errors?.name || null"
 									placeholder="Ex. ABC"
 									:required="true"
 								/>
 							</div>
 							<div class="mb-3 col-6">
 								<BaseInputField
-									id="input_code"
-									label="Last Name"
-									v-model="lastName"
+									id="unitCost"
+									type="number"
+									label="Unit Cost"
+									v-model="item.unitCost"
 									:error="error"
 									:errorField="
-										error?.errors?.lastName || null
+										error?.errors?.unitCost || null
 									"
-									placeholder="Ex. ABC"
-									:required="true"
-								/>
-							</div>
-							<div class="mb-3 col-6">
-								<BaseInputField
-									id="input_code"
-									type="email"
-									label="Email"
-									v-model="email"
-									:error="error"
-									:errorField="error?.errors?.email || null"
 									placeholder="Ex. ABC"
 									:required="true"
 								/>
 							</div>
 							<div class="mb-3 col-6">
 								<BaseTextAreaField
-									id="input_address"
-									label="Home Address"
-									v-model="homeAddress"
+									id="description"
+									label="Description"
+									v-model="item.description"
 									:error="error"
 									:errorField="
-										error?.errors?.homeAddress || null
+										error?.errors?.description || null
 									"
 									placeholder="Ex. "
 									:required="false"
@@ -108,12 +95,12 @@
 							</div>
 							<div class="mb-3 col-6">
 								<BaseInputField
-									id="input_code"
-									label="Mobile No."
-									v-model="mobileNumber"
+									id="quantity"
+									label="Quantity"
+									v-model="item.quantity"
 									:error="error"
 									:errorField="
-										error?.errors?.mobileNumber || null
+										error?.errors?.quantity || null
 									"
 									placeholder="Ex. ABC"
 									:required="true"
@@ -124,7 +111,7 @@
 							<div class="col-12">
 								<input
 									class="btn btn-success"
-									value="Save"
+									value="Save Changes"
 									type="submit"
 									v-if="!loading"
 								/>
@@ -145,11 +132,12 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import useData from '@/composables/useData';
-import { onBeforeRouteLeave, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRouter, useRoute } from 'vue-router';
 import BaseInputField from '@/components/BaseInputField';
 import BaseTextAreaField from '@/components/BaseTextAreaField';
+import getItem from '@/composables/getItem';
 
 export default {
 	components: {
@@ -157,45 +145,38 @@ export default {
 		BaseTextAreaField
 	},
 	setup() {
+		const route = useRoute();
+		const {
+			item,
+			error: errorData,
+			load
+		} = getItem(route.params.id, 'items');
 		const router = useRouter();
-		const { response, error, create, loading, unknownError } = useData();
+		const { response, error, update, loading, unknownError } = useData();
 
-		const email = ref('');
-		const firstName = ref('');
-		const lastName = ref('');
-		const homeAddress = ref('');
-		const mobileNumber = ref('');
+		onBeforeMount(async () => {
+			await load();
+
+			console.log(item.value);
+		});
 
 		const handleSubmit = async () => {
 			error.value = null;
 
-			const data = {
-				email: email.value,
-				firstName: firstName.value,
-				lastName: lastName.value,
-				homeAddress: homeAddress.value,
-				mobileNumber: mobileNumber.value
-			};
-
-			const res = await create('customers', data);
+			const res = await update('items/' + route.params.id, item.value);
 
 			if (!error.value) {
 				router.push({
-					name: 'customers'
+					name: 'items'
 				});
-				console.log('opk nasndnsa');
 			} else {
 				// pushAlert("error", "Invalid Inputs");
 			}
 		};
 
 		return {
+			item,
 			handleSubmit,
-			email,
-			firstName,
-			lastName,
-			homeAddress,
-			mobileNumber,
 			error,
 			loading
 		};

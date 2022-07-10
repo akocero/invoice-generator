@@ -48,17 +48,18 @@ const useData = () => {
 			return res.data;
 		} catch (err) {
 			loading.value = false;
+			console.log(err.response.data.message);
+			error.value = err.response.data;
+			// if (err.message.includes('422')) {
+			// 	error.value = err.response.data;
 
-			if (err.message.includes('422')) {
-				error.value = err.response.data;
-
-				console.log(err.response.data);
-				unknownError.value = null;
-			} else {
-				unknownError.value = 'Please check your internet connection';
-				error.value = null;
-				response.value = null;
-			}
+			// 	console.log(err.response.data);
+			// 	unknownError.value = null;
+			// } else {
+			// 	unknownError.value = 'Please check your internet connection';
+			// 	error.value = null;
+			// 	response.value = null;
+			// }
 		}
 	};
 	return { response, error, create, update, loading, unknownError };

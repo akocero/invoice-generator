@@ -19,7 +19,7 @@
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item">
 						<!-- <a class="nav-link" href="#">Items</a> -->
-						<router-link to="/items" class="nav-link"
+						<router-link :to="{ name: 'items' }" class="nav-link"
 							>Items</router-link
 						>
 					</li>

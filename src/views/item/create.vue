@@ -9,10 +9,10 @@
 					<div
 						class="d-flex justify-content-between align-items-baseline"
 					>
-						<h5 class="card-title mb-4">Create Customer</h5>
+						<h5 class="card-title mb-4">Create Item</h5>
 						<router-link
 							class="btn btn-default"
-							:to="{ name: 'customers' }"
+							:to="{ name: 'items' }"
 							>Back</router-link
 						>
 					</div>
@@ -50,57 +50,44 @@
 									>First Name</label
 								>
 								<input
-									v-model="firstName"
+									v-model="name"
 									type="text"
 									class="form-control"
 									id="exampleFormControlInput1"
 								/> -->
 
 								<BaseInputField
-									id="input_code"
-									label="First Name"
-									v-model="firstName"
+									id="name"
+									label="Item Name"
+									v-model="name"
 									:error="error"
-									:errorField="
-										error?.errors?.firstName || null
-									"
+									:errorField="error?.errors?.name || null"
 									placeholder="Ex. ABC"
 									:required="true"
 								/>
 							</div>
 							<div class="mb-3 col-6">
 								<BaseInputField
-									id="input_code"
-									label="Last Name"
-									v-model="lastName"
+									id="unitCost"
+									type="number"
+									label="Unit Cost"
+									v-model="unitCost"
 									:error="error"
 									:errorField="
-										error?.errors?.lastName || null
+										error?.errors?.unitCost || null
 									"
-									placeholder="Ex. ABC"
-									:required="true"
-								/>
-							</div>
-							<div class="mb-3 col-6">
-								<BaseInputField
-									id="input_code"
-									type="email"
-									label="Email"
-									v-model="email"
-									:error="error"
-									:errorField="error?.errors?.email || null"
 									placeholder="Ex. ABC"
 									:required="true"
 								/>
 							</div>
 							<div class="mb-3 col-6">
 								<BaseTextAreaField
-									id="input_address"
-									label="Home Address"
-									v-model="homeAddress"
+									id="description"
+									label="Description"
+									v-model="description"
 									:error="error"
 									:errorField="
-										error?.errors?.homeAddress || null
+										error?.errors?.description || null
 									"
 									placeholder="Ex. "
 									:required="false"
@@ -108,12 +95,12 @@
 							</div>
 							<div class="mb-3 col-6">
 								<BaseInputField
-									id="input_code"
-									label="Mobile No."
-									v-model="mobileNumber"
+									id="quantity"
+									label="Quantity"
+									v-model="quantity"
 									:error="error"
 									:errorField="
-										error?.errors?.mobileNumber || null
+										error?.errors?.quantity || null
 									"
 									placeholder="Ex. ABC"
 									:required="true"
@@ -160,30 +147,27 @@ export default {
 		const router = useRouter();
 		const { response, error, create, loading, unknownError } = useData();
 
-		const email = ref('');
-		const firstName = ref('');
-		const lastName = ref('');
-		const homeAddress = ref('');
-		const mobileNumber = ref('');
+		const unitCost = ref('');
+		const name = ref('');
+		const description = ref('');
+		const quantity = ref('');
 
 		const handleSubmit = async () => {
 			error.value = null;
 
 			const data = {
-				email: email.value,
-				firstName: firstName.value,
-				lastName: lastName.value,
-				homeAddress: homeAddress.value,
-				mobileNumber: mobileNumber.value
+				unitCost: unitCost.value,
+				name: name.value,
+				description: description.value,
+				quantity: quantity.value
 			};
 
-			const res = await create('customers', data);
+			const res = await create('items', data);
 
 			if (!error.value) {
 				router.push({
-					name: 'customers'
+					name: 'items'
 				});
-				console.log('opk nasndnsa');
 			} else {
 				// pushAlert("error", "Invalid Inputs");
 			}
@@ -191,11 +175,10 @@ export default {
 
 		return {
 			handleSubmit,
-			email,
-			firstName,
-			lastName,
-			homeAddress,
-			mobileNumber,
+			unitCost,
+			name,
+			description,
+			quantity,
 			error,
 			loading
 		};

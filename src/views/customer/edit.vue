@@ -9,7 +9,7 @@
 					<div
 						class="d-flex justify-content-between align-items-baseline"
 					>
-						<h5 class="card-title mb-4">Create Customer</h5>
+						<h5 class="card-title mb-4">Edit Customer</h5>
 						<router-link
 							class="btn btn-default"
 							:to="{ name: 'customers' }"
@@ -19,47 +19,13 @@
 					<div v-if="error" class="alert alert-danger" role="alert">
 						{{ error.message }}
 					</div>
-					<form @submit.prevent="handleSubmit">
+					<form @submit.prevent="handleSubmit" v-if="item">
 						<div class="row">
-							<!-- <div class="mb-3 col-6">
-								<label for="" class="form-label"
-									>Customers</label
-								>
-								<select
-									class="form-select"
-									aria-label="Default select example"
-									required
-									v-model="customer"
-								>
-									<option selected value="">Select...</option>
-
-									<option
-										:value="itemCustomer.id"
-										v-for="itemCustomer in customers"
-										:key="itemCustomer.id"
-									>
-										{{ itemCustomer.name }}
-									</option>
-								</select>
-							</div> -->
-
 							<div class="mb-3 col-6">
-								<!-- <label
-									for="exampleFormControlInput1"
-									class="form-label"
-									>First Name</label
-								>
-								<input
-									v-model="firstName"
-									type="text"
-									class="form-control"
-									id="exampleFormControlInput1"
-								/> -->
-
 								<BaseInputField
 									id="input_code"
 									label="First Name"
-									v-model="firstName"
+									v-model="item.firstName"
 									:error="error"
 									:errorField="
 										error?.errors?.firstName || null
@@ -72,7 +38,7 @@
 								<BaseInputField
 									id="input_code"
 									label="Last Name"
-									v-model="lastName"
+									v-model="item.lastName"
 									:error="error"
 									:errorField="
 										error?.errors?.lastName || null
@@ -86,7 +52,7 @@
 									id="input_code"
 									type="email"
 									label="Email"
-									v-model="email"
+									v-model="item.email"
 									:error="error"
 									:errorField="error?.errors?.email || null"
 									placeholder="Ex. ABC"
@@ -97,7 +63,7 @@
 								<BaseTextAreaField
 									id="input_address"
 									label="Home Address"
-									v-model="homeAddress"
+									v-model="item.homeAddress"
 									:error="error"
 									:errorField="
 										error?.errors?.homeAddress || null
@@ -110,7 +76,7 @@
 								<BaseInputField
 									id="input_code"
 									label="Mobile No."
-									v-model="mobileNumber"
+									v-model="item.mobileNumber"
 									:error="error"
 									:errorField="
 										error?.errors?.mobileNumber || null
@@ -124,7 +90,7 @@
 							<div class="col-12">
 								<input
 									class="btn btn-success"
-									value="Save"
+									value="Save Changes"
 									type="submit"
 									v-if="!loading"
 								/>
@@ -145,11 +111,12 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import useData from '@/composables/useData';
-import { onBeforeRouteLeave, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRouter, useRoute } from 'vue-router';
 import BaseInputField from '@/components/BaseInputField';
 import BaseTextAreaField from '@/components/BaseTextAreaField';
+import getItem from '@/composables/getItem';
 
 export default {
 	components: {
@@ -157,45 +124,41 @@ export default {
 		BaseTextAreaField
 	},
 	setup() {
+		const route = useRoute();
+		const {
+			item,
+			error: errorData,
+			load
+		} = getItem(route.params.id, 'customers');
 		const router = useRouter();
-		const { response, error, create, loading, unknownError } = useData();
+		const { response, error, update, loading, unknownError } = useData();
 
-		const email = ref('');
-		const firstName = ref('');
-		const lastName = ref('');
-		const homeAddress = ref('');
-		const mobileNumber = ref('');
+		onBeforeMount(async () => {
+			await load();
+
+			console.log(item.value);
+		});
 
 		const handleSubmit = async () => {
 			error.value = null;
 
-			const data = {
-				email: email.value,
-				firstName: firstName.value,
-				lastName: lastName.value,
-				homeAddress: homeAddress.value,
-				mobileNumber: mobileNumber.value
-			};
-
-			const res = await create('customers', data);
+			const res = await update(
+				'customers/' + route.params.id,
+				item.value
+			);
 
 			if (!error.value) {
 				router.push({
 					name: 'customers'
 				});
-				console.log('opk nasndnsa');
 			} else {
 				// pushAlert("error", "Invalid Inputs");
 			}
 		};
 
 		return {
+			item,
 			handleSubmit,
-			email,
-			firstName,
-			lastName,
-			homeAddress,
-			mobileNumber,
 			error,
 			loading
 		};

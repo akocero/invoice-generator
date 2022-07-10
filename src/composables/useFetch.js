@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import axios from '../config/axios-config';
+// import axios from 'axios';
 
 const useFetch = () => {
 	const data = ref([]);

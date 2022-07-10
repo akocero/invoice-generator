@@ -2,9 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import Signup from '../views/Signup.vue';
 import Login from '../views/Login.vue';
-import Items from '../views/Items.vue';
 import CreateInvoice from '../views/CreateInvoice.vue';
-import Customers from '../views/customer/index.vue';
 import store from '@/store';
 
 const authRequired = (to, from, next) => {
@@ -40,19 +38,34 @@ const routes = [
 				component: HomeView
 			},
 			{
-				path: '/items',
-				name: 'items',
-				component: Items
-			},
-			{
 				path: 'customers',
 				name: 'customers',
-				component: Customers
+				component: import('@/views/customer/index.vue')
 			},
 			{
 				path: 'customers/create',
 				name: 'create-customer',
 				component: () => import('@/views/customer/create.vue')
+			},
+			{
+				path: 'customers/edit/:id',
+				name: 'edit-customer',
+				component: () => import('@/views/customer/edit.vue')
+			},
+			{
+				path: 'items',
+				name: 'items',
+				component: import('@/views/item/index.vue')
+			},
+			{
+				path: 'items/create',
+				name: 'create-item',
+				component: () => import('@/views/item/create.vue')
+			},
+			{
+				path: 'items/edit/:id',
+				name: 'edit-item',
+				component: () => import('@/views/item/edit.vue')
 			},
 			{
 				path: '/create-invoice',

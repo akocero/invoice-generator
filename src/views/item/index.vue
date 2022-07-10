@@ -5,9 +5,9 @@
 				<div
 					class="d-flex justify-content-between align-items-baseline"
 				>
-					<h5 class="card-title mb-4">Customers</h5>
+					<h5 class="card-title mb-4">Items</h5>
 					<router-link
-						:to="{ name: 'create-customer' }"
+						:to="{ name: 'create-item' }"
 						class="btn btn-primary"
 						>Add New</router-link
 					>
@@ -15,10 +15,10 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th scope="col">Email</th>
-							<th scope="col">Customer Name</th>
-							<th scope="col">Mobile No.</th>
-							<th scope="col">Created At</th>
+							<th scope="col">Name</th>
+							<th scope="col">Description</th>
+							<th scope="col">Unit Cost</th>
+							<th scope="col">Quantity</th>
 							<th scope="col">Actions</th>
 						</tr>
 					</thead>
@@ -31,15 +31,15 @@
 					</tbody>
 					<tbody v-if="!isPending">
 						<tr v-for="item in data" :key="item._id">
-							<td>{{ item.email }}</td>
-							<td>{{ item.lastName }}, {{ item.firstName }}</td>
-							<td>{{ item.mobileNumber }}</td>
-							<td>{{ item.createdAt }}</td>
+							<td>{{ item.name }}</td>
+							<td>{{ item.description }}</td>
+							<td>{{ item.unitCost }}</td>
+							<td>{{ item.quantity }}</td>
 							<td>
 								<router-link
 									class="btn btn-sm btn-outline-secondary"
 									:to="{
-										name: 'edit-customer',
+										name: 'edit-item',
 										params: { id: item._id }
 									}"
 								>
@@ -71,7 +71,7 @@ export default {
 
 		const fetchAll = () => {
 			search.value = '';
-			fetch('customers');
+			fetch('items');
 		};
 
 		return {
