@@ -12,6 +12,7 @@
 		:value="modelValue"
 		:step="step"
 		@input="$emit('update:modelValue', $event.target.value)"
+		:disabled="disabled"
 	/>
 	<!-- <small v-if="error && errorField" class="form-text text-danger">
 		{{ errorField[0] }}
@@ -32,6 +33,10 @@ export default {
 		placeholder: String,
 		required: Boolean,
 		errorField: String,
+		disabled: {
+			type: Boolean,
+			default: false
+		},
 		step: {
 			type: Number,
 			default: null

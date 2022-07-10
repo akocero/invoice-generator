@@ -31,8 +31,8 @@
 						>
 					</li>
 					<li class="nav-item">
-						<router-link to="/create-invoice" class="nav-link"
-							>Create Invoice</router-link
+						<router-link :to="{ name: 'invoices' }" class="nav-link"
+							>Invoices</router-link
 						>
 					</li>
 					<li class="nav-item">

@@ -87,9 +87,28 @@ const routes = [
 					)
 			},
 			{
-				path: '/create-invoice',
-				name: 'createInvoice',
-				component: CreateInvoice
+				path: 'invoices',
+				name: 'invoices',
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/invoice/index.vue'
+					)
+			},
+			{
+				path: 'invoices/create',
+				name: 'create-invoice',
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/invoice/create.vue'
+					)
+			},
+			{
+				path: 'invoices/edit/:id',
+				name: 'edit-invoice',
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/invoice/edit.vue'
+					)
 			}
 		]
 	},
