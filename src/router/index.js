@@ -55,7 +55,10 @@ const routes = [
 			{
 				path: 'items',
 				name: 'items',
-				component: import('@/views/item/index.vue')
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/item/index.vue'
+					)
 			},
 			{
 				path: 'items/create',
@@ -65,7 +68,10 @@ const routes = [
 			{
 				path: 'items/edit/:id',
 				name: 'edit-item',
-				component: () => import('@/views/item/edit.vue')
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/item/edit.vue'
+					)
 			},
 			{
 				path: '/create-invoice',
