@@ -477,9 +477,11 @@ export default {
 			if (item.value.items.length) {
 				addedItems.value = item.value.items;
 			}
-			console.log(item.value.dueDate);
 
 			item.value.dueDate = item.value.dueDate.substring(0, 10);
+			item.value.datePaid = item.value.datePaid
+				? item.value.datePaid.substring(0, 10)
+				: undefined;
 			console.log(item.value.dueDate);
 			await loadDiscounts('discounts');
 		});
