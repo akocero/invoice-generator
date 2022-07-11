@@ -1,8 +1,8 @@
 <template>
 	<div id="print-table" v-if="item">
 		<div class="row" v-if="item">
-			<div class="col-5 border">
-				<h2>Papier Reei</h2>
+			<div class="col-5">
+				<h2>Papier Renei</h2>
 				<p>
 					Blk 0 Lot 0 Phase 0Francisco Homes-Mulawin City of San Jose
 					del Monte Bulacan, 3023 639200000000
@@ -11,7 +11,7 @@
 				<h1>Invoice</h1>
 				<label
 					>Sent on
-					{{ moment(Date.now()).format('YYYY-mm-DD') }}
+					{{ moment(Date.now()).format('MM/DD/YYYY') }}
 				</label>
 			</div>
 			<div class="col-6">
@@ -41,7 +41,7 @@
 				<label for="">Invoice #:</label>
 				<p>{{ item.invoiceNo }}</p>
 				<label for="">Due date:</label>
-				<p>{{ item.dueDate }}</p>
+				<p>{{ moment(item.dueDate).format('MM/DD/YYYY') }}</p>
 				<label for="">Status:</label>
 				<p>{{ item.status }}</p>
 			</div>
