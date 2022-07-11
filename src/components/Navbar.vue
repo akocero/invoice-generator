@@ -36,6 +36,13 @@
 						>
 					</li>
 					<li class="nav-item">
+						<router-link
+							:to="{ name: 'discounts' }"
+							class="nav-link"
+							>Discounts</router-link
+						>
+					</li>
+					<li class="nav-item">
 						<a
 							class="nav-link disabled"
 							href="#"

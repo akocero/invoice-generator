@@ -94,14 +94,47 @@
 								/>
 							</div>
 							<div class="mb-3 col-6">
-								<BaseTextAreaField
-									id="input_address"
-									label="Home Address"
-									v-model="homeAddress"
+								<BaseInputField
+									id="streetAddress"
+									label="Street Address"
+									v-model="streetAddress"
 									:error="error"
 									:errorField="
-										error?.errors?.homeAddress || null
+										error?.errors?.streetAddress || null
 									"
+									placeholder="Ex. "
+									:required="false"
+								/>
+							</div>
+							<div class="mb-3 col-6">
+								<BaseInputField
+									id="city"
+									label="City"
+									v-model="city"
+									:error="error"
+									:errorField="error?.errors?.city || null"
+									placeholder="Ex. "
+									:required="false"
+								/>
+							</div>
+							<div class="mb-3 col-6">
+								<BaseInputField
+									id="state"
+									label="State"
+									v-model="state"
+									:error="error"
+									:errorField="error?.errors?.state || null"
+									placeholder="Ex. "
+									:required="false"
+								/>
+							</div>
+							<div class="mb-3 col-6">
+								<BaseInputField
+									id="zipCode"
+									label="Zip Code"
+									v-model="zipCode"
+									:error="error"
+									:errorField="error?.errors?.zipCode || null"
 									placeholder="Ex. "
 									:required="false"
 								/>
@@ -163,7 +196,10 @@ export default {
 		const email = ref('');
 		const firstName = ref('');
 		const lastName = ref('');
-		const homeAddress = ref('');
+		const streetAddress = ref('');
+		const state = ref('');
+		const city = ref('');
+		const zipCode = ref('');
 		const mobileNumber = ref('');
 
 		const handleSubmit = async () => {
@@ -173,8 +209,11 @@ export default {
 				email: email.value,
 				firstName: firstName.value,
 				lastName: lastName.value,
-				homeAddress: homeAddress.value,
-				mobileNumber: mobileNumber.value
+				streetAddress: streetAddress.value,
+				mobileNumber: mobileNumber.value,
+				state: state.value,
+				zipCode: zipCode.value,
+				city: city.value
 			};
 
 			const res = await create('customers', data);
@@ -194,8 +233,11 @@ export default {
 			email,
 			firstName,
 			lastName,
-			homeAddress,
+			streetAddress,
 			mobileNumber,
+			state,
+			zipCode,
+			city,
 			error,
 			loading
 		};

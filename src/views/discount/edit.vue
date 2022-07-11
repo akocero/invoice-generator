@@ -9,10 +9,10 @@
 					<div
 						class="d-flex justify-content-between align-items-baseline"
 					>
-						<h5 class="card-title mb-4">Edit Customer</h5>
+						<h5 class="card-title mb-4">Edit Discount</h5>
 						<router-link
 							class="btn btn-default"
-							:to="{ name: 'customers' }"
+							:to="{ name: 'discounts' }"
 							>Back</router-link
 						>
 					</div>
@@ -23,96 +23,45 @@
 						<div class="row">
 							<div class="mb-3 col-6">
 								<BaseInputField
-									id="input_code"
-									label="First Name"
-									v-model="item.firstName"
+									id="code"
+									label="Discount Code"
+									v-model="item.code"
 									:error="error"
-									:errorField="
-										error?.errors?.firstName || null
-									"
+									:errorField="error?.errors?.code || null"
 									placeholder="Ex. ABC"
 									:required="true"
 								/>
 							</div>
 							<div class="mb-3 col-6">
-								<BaseInputField
-									id="input_code"
-									label="Last Name"
-									v-model="item.lastName"
+								<BaseSelectField
+									id="discountKind"
+									label="Discount Type"
+									v-model="item.discountKind"
 									:error="error"
 									:errorField="
-										error?.errors?.lastName || null
+										error?.errors?.discountKind || null
 									"
-									placeholder="Ex. ABC"
+									:options="[
+										{
+											value: 'percent',
+											label: 'Percent'
+										},
+										{
+											value: 'amount',
+											label: 'Amount'
+										}
+									]"
 									:required="true"
 								/>
 							</div>
 							<div class="mb-3 col-6">
 								<BaseInputField
-									id="input_code"
-									type="email"
-									label="Email"
-									v-model="item.email"
-									:error="error"
-									:errorField="error?.errors?.email || null"
-									placeholder="Ex. ABC"
-									:required="true"
-								/>
-							</div>
-							<div class="mb-3 col-6">
-								<BaseInputField
-									id="streetAddress"
-									label="Street Address"
-									v-model="item.streetAddress"
+									id="discountValue"
+									label="Discount Value"
+									v-model="item.discountValue"
 									:error="error"
 									:errorField="
-										error?.errors?.streetAddress || null
-									"
-									placeholder="Ex. "
-									:required="false"
-								/>
-							</div>
-							<div class="mb-3 col-6">
-								<BaseInputField
-									id="city"
-									label="City"
-									v-model="item.city"
-									:error="error"
-									:errorField="error?.errors?.city || null"
-									placeholder="Ex. "
-									:required="false"
-								/>
-							</div>
-							<div class="mb-3 col-6">
-								<BaseInputField
-									id="state"
-									label="State"
-									v-model="item.state"
-									:error="error"
-									:errorField="error?.errors?.state || null"
-									placeholder="Ex. "
-									:required="false"
-								/>
-							</div>
-							<div class="mb-3 col-6">
-								<BaseInputField
-									id="zipCode"
-									label="Zip Code"
-									v-model="item.zipCode"
-									:error="error"
-									:errorField="error?.errors?.zipCode || null"
-									placeholder="Ex. "
-									:required="false"
-								/>
-							</div>
-							<div class="mb-3 col-6">
-								<BaseInputField
-									id="input_code"
-									label="Mobile No."
-									v-model="item.mobileNumber"
-									:error="error"
-									:errorField="
-										error?.errors?.mobileNumber || null
+										error?.errors?.discountValue || null
 									"
 									placeholder="Ex. ABC"
 									:required="true"
@@ -150,11 +99,13 @@ import { onBeforeRouteLeave, useRouter, useRoute } from 'vue-router';
 import BaseInputField from '@/components/BaseInputField';
 import BaseTextAreaField from '@/components/BaseTextAreaField';
 import getItem from '@/composables/getItem';
+import BaseSelectField from '@/components/BaseSelectField';
 
 export default {
 	components: {
 		BaseInputField,
-		BaseTextAreaField
+		BaseTextAreaField,
+		BaseSelectField
 	},
 	setup() {
 		const route = useRoute();
@@ -162,7 +113,7 @@ export default {
 			item,
 			error: errorData,
 			load
-		} = getItem(route.params.id, 'customers');
+		} = getItem(route.params.id, 'discounts');
 		const router = useRouter();
 		const { response, error, update, loading, unknownError } = useData();
 
@@ -176,13 +127,13 @@ export default {
 			error.value = null;
 
 			const res = await update(
-				'customers/' + route.params.id,
+				'discounts/' + route.params.id,
 				item.value
 			);
 
 			if (!error.value) {
 				router.push({
-					name: 'customers'
+					name: 'discounts'
 				});
 			} else {
 				// pushAlert("error", "Invalid Inputs");

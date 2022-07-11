@@ -109,6 +109,30 @@ const routes = [
 					import(
 						/* webpackChunkName: "about" */ '../views/invoice/edit.vue'
 					)
+			},
+			{
+				path: 'discounts',
+				name: 'discounts',
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/discount/index.vue'
+					)
+			},
+			{
+				path: 'discounts/create',
+				name: 'create-discount',
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/discount/create.vue'
+					)
+			},
+			{
+				path: 'discounts/edit/:id',
+				name: 'edit-discount',
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/discount/edit.vue'
+					)
 			}
 		]
 	},

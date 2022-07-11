@@ -1,6 +1,6 @@
 <template>
 	<div class="items" style="margin-top: 2rem">
-		<Print v-show="isPrinting" :item="printData" />
+		<Print v-if="isPrinting" :item="printData" />
 		<div class="card border-0">
 			<div class="card-body p-4">
 				<div
@@ -37,7 +37,13 @@
 						<tr v-for="item in data" :key="item._id">
 							<td>{{ item.invoiceNo }}</td>
 							<td>{{ item.invoiceFor.name }}</td>
-							<td>{{ item.createdAt }}</td>
+							<td>
+								{{
+									moment(item.createdAt).format(
+										'MMMM Do YYYY'
+									)
+								}}
+							</td>
 							<td>
 								<span
 									class="badge rounded-pill bg-warning"
@@ -93,6 +99,7 @@ import { ref, onBeforeMount } from 'vue';
 // import { router-link } from "vue-router"
 import useFetch from '@/composables/useFetch';
 import Print from '@/components/invoice/Print.vue';
+import moment from 'moment';
 
 export default {
 	components: {
@@ -108,12 +115,13 @@ export default {
 			fetchAll();
 		});
 
-		const fetchAll = () => {
+		const fetchAll = async () => {
 			search.value = '';
-			fetch('invoices');
+			await fetch('invoices');
 		};
 
 		const print = (item) => {
+			item.dueDate = item.dueDate.substring(0, 10);
 			printData.value = item;
 			isPrinting.value = true;
 			setTimeout(() => {
@@ -132,7 +140,8 @@ export default {
 			fetchAll,
 			print,
 			isPrinting,
-			printData
+			printData,
+			moment
 		};
 	}
 };

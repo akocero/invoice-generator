@@ -180,18 +180,12 @@
 										v-model="discount"
 										:error="error"
 										:errorField="
-											error?.errors?.discount || null
+											error?.errors['discount.code'] ||
+											null
 										"
-										:options="[
-											{
-												value: 'php',
-												label: 'PHP'
-											},
-											{
-												value: 'usd',
-												label: 'USD'
-											}
-										]"
+										optionValue="_id"
+										optionLabel="code"
+										:options="discounts"
 										:required="true"
 									/>
 								</div>
@@ -384,6 +378,7 @@ export default {
 		const route = useRoute();
 		const { response, error, create, loading, unknownError } = useData();
 		const { data: customers, fetch: loadCustomers } = useFetch();
+		const { data: discounts, fetch: loadDiscounts } = useFetch();
 		const { data: invoices, fetch: loadInvoices } = useFetch();
 		const { data: items, fetch: loadItems } = useFetch();
 
@@ -393,6 +388,7 @@ export default {
 		const selectedQty = ref('');
 		const payableTo = ref('');
 		const discount = ref('');
+		const selectedDiscount = ref('');
 		const shippingFee = ref('');
 		const notes = ref('');
 		const addedItems = ref([]);
@@ -404,6 +400,7 @@ export default {
 		onBeforeMount(async () => {
 			await loadCustomers(`customers`);
 			await loadItems(`items`);
+			await loadDiscounts(`discounts`);
 		});
 
 		onMounted(async () => {
@@ -433,13 +430,13 @@ export default {
 				invoiceFor: selectedInvoiceFor.value,
 				payableTo: payableTo.value,
 				items: addedItems.value,
-				discount: discount.value,
+				discount: selectedDiscount.value,
 				shippingFee: shippingFee.value,
 				notes: notes.value,
 				dueDate: dueDate.value
 			};
 
-			console.log(data);
+			console.log('data', data);
 
 			const res = await create('invoices', data);
 
@@ -451,6 +448,17 @@ export default {
 				// pushAlert("error", "Invalid Inputs");
 			}
 		};
+
+		watch(discount, (newDiscount) => {
+			if (newDiscount) {
+				const _selectedDiscount = discounts.value.find(
+					(item) => item._id === newDiscount
+				);
+				selectedDiscount.value = _selectedDiscount;
+			} else {
+				selectedDiscount.value = {};
+			}
+		});
 
 		watch(invoiceFor, (newInvoiceFor) => {
 			if (newInvoiceFor) {
@@ -468,7 +476,7 @@ export default {
 		const addItem = () => {
 			errorItems.value = '';
 
-			if (!selectedQty.value || selectedQty.value == 0) {
+			if (!selectedQty.value || selectedQty.value <= 0) {
 				errorItems.value = 'Please add quantity';
 
 				return false;
@@ -517,6 +525,7 @@ export default {
 			invoiceFor,
 			payableTo,
 			discount,
+			discounts,
 			shippingFee,
 			notes,
 			error,
@@ -530,6 +539,7 @@ export default {
 			addItem,
 			deleteAddedItem,
 			addedItemsTotal,
+			selectedDiscount,
 			errorItems,
 			invoiceNo,
 			dueDate

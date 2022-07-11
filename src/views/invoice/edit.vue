@@ -51,6 +51,24 @@
 										:required="true"
 									/>
 								</div>
+								<div class="mt-3 col-12">
+									<h6>Customer Info.</h6>
+								</div>
+								<div class="mb-3 col-6">
+									<BaseSelectField
+										id="invoiceFor"
+										label="Select Customer"
+										v-model="invoiceFor"
+										:error="error"
+										:errorField="
+											error?.errors?.invoiceFor || null
+										"
+										:options="customers"
+										optionLabel="firstName"
+										optionValue="_id"
+										:required="true"
+									/>
+								</div>
 
 								<div class="mb-3 col-6">
 									<BaseInputField
@@ -64,7 +82,7 @@
 										"
 										placeholder="Ex. ABC"
 										:required="false"
-										:disabled="false"
+										:disabled="true"
 									/>
 								</div>
 								<div class="mb-3 col-6">
@@ -79,6 +97,7 @@
 										"
 										placeholder="Ex. ABC"
 										:required="false"
+										:disabled="true"
 									/>
 								</div>
 								<div class="mb-3 col-6">
@@ -94,7 +113,7 @@
 										"
 										placeholder="Ex. ABC"
 										:required="false"
-										:disabled="false"
+										:disabled="true"
 									/>
 								</div>
 								<div class="mb-3 col-6">
@@ -108,7 +127,7 @@
 										"
 										placeholder="Ex. ABC"
 										:required="false"
-										:disabled="false"
+										:disabled="true"
 									/>
 								</div>
 								<div class="mb-3 col-6">
@@ -122,7 +141,7 @@
 										"
 										placeholder="Ex. ABC"
 										:required="false"
-										:disabled="false"
+										:disabled="true"
 									/>
 								</div>
 								<div class="mb-3 col-6">
@@ -136,7 +155,7 @@
 										"
 										placeholder="Ex. ABC"
 										:required="false"
-										:disabled="false"
+										:disabled="true"
 									/>
 								</div>
 								<div class="mb-3 col-6">
@@ -150,30 +169,57 @@
 										"
 										placeholder="Ex. ABC"
 										:required="false"
-										:disabled="false"
+										:disabled="true"
 									/>
+								</div>
+								<div class="mt-3 col-12">
+									<h6>Discount Info.</h6>
 								</div>
 								<div class="mb-3 col-6">
 									<BaseSelectField
 										id="discount"
-										label="Discount"
-										v-model="item.discount"
+										label="Select Discount"
+										v-model="discount"
 										:error="error"
 										:errorField="
 											error?.errors?.discount || null
 										"
-										:options="[
-											{
-												value: 'php',
-												label: 'PHP'
-											},
-											{
-												value: 'usd',
-												label: 'USD'
-											}
-										]"
+										optionValue="_id"
+										optionLabel="code"
+										:options="discounts"
 										:required="true"
 									/>
+								</div>
+								<div class="mb-3 col-6" v-if="item.discount">
+									<BaseInputField
+										id="discountKind"
+										label="Discount Type"
+										v-model="item.discount.discountKind"
+										:error="error"
+										:errorField="
+											error?.errors?.discount || null
+										"
+										placeholder="Ex. ABC"
+										:required="false"
+										:disabled="true"
+									/>
+								</div>
+								<div class="mb-3 col-6" v-if="item.discount">
+									<BaseInputField
+										id="discountValue"
+										label="Discount Value"
+										v-model="item.discount.discountValue"
+										:error="error"
+										:errorField="
+											error?.errors?.discount || null
+										"
+										placeholder="Ex. ABC"
+										:required="false"
+										:disabled="true"
+									/>
+								</div>
+								<div class="mt-3 col-12">
+									<h6>Other Info.</h6>
 								</div>
 								<div class="mb-3 col-6">
 									<BaseInputField
@@ -353,6 +399,7 @@ import BaseTextAreaField from '@/components/BaseTextAreaField';
 import BaseSelectField from '@/components/BaseSelectField';
 import { onBeforeMount } from '@vue/runtime-core';
 import getItem from '@/composables/getItem';
+import moment from 'moment';
 
 export default {
 	components: {
@@ -365,6 +412,8 @@ export default {
 		const route = useRoute();
 		const { response, error, update, loading, unknownError } = useData();
 		const { data: items, fetch: loadItems } = useFetch();
+		const { data: discounts, fetch: loadDiscounts } = useFetch();
+		const { data: customers, fetch: loadCustomers } = useFetch();
 		const {
 			item,
 			error: errorData,
@@ -375,22 +424,25 @@ export default {
 		const addedItems = ref([]);
 		const addedItemsTotal = ref(0);
 		const errorItems = ref('');
+		const invoiceFor = ref('');
+		const discount = ref('');
 
 		onBeforeMount(async () => {
 			await load();
 			await loadItems('items');
-
+			await loadCustomers('customers');
 			if (item.value.items.length) {
 				addedItems.value = item.value.items;
 			}
+			console.log(item.value.dueDate);
 
-			// item.value.dueDate = new Date(item.value.dueDate);
-			console.log(item.value.dueDate)
+			item.value.dueDate = item.value.dueDate.substring(0, 10);
+			console.log(item.value.dueDate);
+			await loadDiscounts('discounts');
 		});
 
-		onMounted(async () => {});
-
 		const handleSubmit = async () => {
+			// console.log(item.value.dueDate);
 			error.value = null;
 			errorItems.value = null;
 
@@ -414,7 +466,7 @@ export default {
 		const addItem = () => {
 			errorItems.value = '';
 
-			if (!selectedQty.value || selectedQty.value == 0) {
+			if (!selectedQty.value || selectedQty.value <= 0) {
 				errorItems.value = 'Please add quantity';
 
 				return false;
@@ -458,6 +510,31 @@ export default {
 			getTotal();
 		};
 
+		watch(invoiceFor, (newInvoiceFor) => {
+			if (newInvoiceFor) {
+				const _selectedInvoiceFor = customers.value.find(
+					(item) => item._id === newInvoiceFor
+				);
+				item.value.invoiceFor = _selectedInvoiceFor;
+				item.value.invoiceFor.name = `${_selectedInvoiceFor.firstName} ${_selectedInvoiceFor.lastName}`;
+			} else {
+				item.value.invoiceFor = {};
+			}
+
+			console.log(item.value.invoiceFor);
+		});
+
+		watch(discount, (newDiscount) => {
+			if (newDiscount) {
+				const _selectedDiscount = discounts.value.find(
+					(item) => item._id === newDiscount
+				);
+				item.value.discount = _selectedDiscount;
+			} else {
+				item.value.discount = {};
+			}
+		});
+
 		return {
 			handleSubmit,
 			item,
@@ -470,7 +547,11 @@ export default {
 			addItem,
 			deleteAddedItem,
 			addedItemsTotal,
-			errorItems
+			errorItems,
+			customers,
+			invoiceFor,
+			discounts,
+			discount
 		};
 	}
 };
