@@ -80,6 +80,7 @@
 											}
 										]"
 										:required="true"
+										:disabled="disableStatus"
 									/>
 								</div>
 								<div
@@ -97,6 +98,7 @@
 										"
 										placeholder="Ex. ABC"
 										:required="false"
+										:disabled="disableStatus"
 									/>
 								</div>
 								<div class="mt-3 col-12">
@@ -474,6 +476,7 @@ export default {
 		const errorItems = ref('');
 		const invoiceFor = ref('');
 		const discount = ref('');
+		const disableStatus = ref(false);
 
 		onBeforeMount(async () => {
 			await load();
@@ -481,6 +484,10 @@ export default {
 			await loadCustomers('customers');
 			if (item.value.items.length) {
 				addedItems.value = item.value.items;
+			}
+
+			if (item.value.status === 'paid') {
+				disableStatus.value = true;
 			}
 
 			item.value.dueDate = item.value.dueDate.substring(0, 10);
@@ -616,7 +623,8 @@ export default {
 			customers,
 			invoiceFor,
 			discounts,
-			discount
+			discount,
+			disableStatus
 		};
 	}
 };
