@@ -403,7 +403,7 @@
 									<td>
 										<button
 											class="btn btn-sm btn-outline-secondary"
-											@click="deleteAddedItem(i.id)"
+											@click="deleteAddedItem(i.name)"
 										>
 											Delete
 										</button>
@@ -563,8 +563,8 @@ export default {
 			addedItemsTotal.value = _total;
 		};
 
-		const deleteAddedItem = (id) => {
-			addedItems.value = addedItems.value.filter((el) => el.id !== id);
+		const deleteAddedItem = (name) => {
+			addedItems.value = addedItems.value.filter((el) => el.name !== name);
 			getTotal();
 		};
 
