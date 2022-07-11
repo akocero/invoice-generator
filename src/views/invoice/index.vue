@@ -23,6 +23,7 @@
 							<th scope="col">Invoice For</th>
 							<th scope="col">Created At</th>
 							<th scope="col">Status</th>
+							<th scope="col">Date Paid</th>
 							<th scope="col">Actions</th>
 						</tr>
 					</thead>
@@ -58,6 +59,14 @@
 									v-if="item.status === 'overdue'"
 									>{{ item.status }}</span
 								>
+							</td>
+							<td v-if="item.status === 'paid'">
+								{{
+									moment(item.createdAt).format('MM/DD/YYYY')
+								}}
+							</td>
+							<td v-else>
+								TO BE PAID
 							</td>
 							<td>
 								<router-link
