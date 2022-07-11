@@ -80,11 +80,6 @@
 											}
 										]"
 										:required="true"
-										:disabled="
-											item.status === 'paid'
-												? true
-												: false
-										"
 									/>
 								</div>
 								<div

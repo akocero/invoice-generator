@@ -74,8 +74,8 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="3" class="border-bottom-0">&nbsp;</td>
-					<td colspan="10">&nbsp;</td>
+					<td colspan="3" class="border-bottom-0 p-0">&nbsp;</td>
+					<td colspan="10" class="p-0">&nbsp;</td>
 				</tr>
 				<tr>
 					<td colspan="3" class="border-bottom-0"></td>
