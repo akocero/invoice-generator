@@ -9,6 +9,7 @@
 		:class="[error && errorField && 'is-invalid']"
 		:value="modelValue"
 		@change="$emit('update:modelValue', $event.target.value)"
+		:disabled="disabled"
 	>
 		<option value="" v-if="emptyOption">Choose</option>
 
@@ -50,6 +51,10 @@ export default {
 		options: {
 			type: Array,
 			required: true
+		},
+		disabled: {
+			type: Boolean,
+			default: false
 		}
 	}
 };

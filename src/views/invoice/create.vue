@@ -8,6 +8,11 @@
 							class="d-flex justify-content-between align-items-baseline"
 						>
 							<h5 class="card-title mb-4">Create Invoice</h5>
+							<router-link
+								class="btn btn-outline-secondary"
+								:to="{ name: 'invoices' }"
+								>Cancel</router-link
+							>
 						</div>
 						<div
 							v-if="error"

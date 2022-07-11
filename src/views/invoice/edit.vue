@@ -8,6 +8,11 @@
 							class="d-flex justify-content-between align-items-baseline"
 						>
 							<h5 class="card-title mb-4">Edit Invoice</h5>
+							<router-link
+								class="btn btn-outline-secondary"
+								:to="{ name: 'invoices' }"
+								>Cancel</router-link
+							>
 						</div>
 						<div
 							v-if="error"
@@ -75,6 +80,11 @@
 											}
 										]"
 										:required="true"
+										:disabled="
+											item.status === 'paid'
+												? true
+												: false
+										"
 									/>
 								</div>
 								<div
@@ -92,6 +102,11 @@
 										"
 										placeholder="Ex. ABC"
 										:required="false"
+										:disabled="
+											item.status === 'paid'
+												? true
+												: false
+										"
 									/>
 								</div>
 								<div class="mt-3 col-12">
@@ -564,7 +579,9 @@ export default {
 		};
 
 		const deleteAddedItem = (name) => {
-			addedItems.value = addedItems.value.filter((el) => el.name !== name);
+			addedItems.value = addedItems.value.filter(
+				(el) => el.name !== name
+			);
 			getTotal();
 		};
 
