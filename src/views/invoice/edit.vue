@@ -51,6 +51,49 @@
 										:required="true"
 									/>
 								</div>
+								<div class="mb-3 col-6">
+									<BaseSelectField
+										id="payableTo"
+										label="Invoice Status"
+										v-model="item.status"
+										:error="error"
+										:errorField="
+											error?.errors?.payableTo || null
+										"
+										:options="[
+											{
+												value: 'unsettled',
+												label: 'Unsettled'
+											},
+											{
+												value: 'paid',
+												label: 'Paid'
+											},
+											{
+												value: 'overdue',
+												label: 'Overdue'
+											}
+										]"
+										:required="true"
+									/>
+								</div>
+								<div
+									class="mb-3 col-6"
+									v-if="item.status === 'paid'"
+								>
+									<BaseInputField
+										type="date"
+										id="datePaid"
+										label="Date Paid"
+										v-model="item.datePaid"
+										:error="error"
+										:errorField="
+											error?.errors?.datePaid || null
+										"
+										placeholder="Ex. ABC"
+										:required="false"
+									/>
+								</div>
 								<div class="mt-3 col-12">
 									<h6>Customer Info.</h6>
 								</div>
@@ -452,6 +495,19 @@ export default {
 			}
 
 			item.value.items = addedItems.value;
+
+			if (item.value.status === 'paid') {
+				if (item.value.datePaid) {
+					item.value.datePaid.substring(0, 10);
+				} else {
+					console.log(item.value.status, item.value.datePaid);
+					error.value = {
+						errors: { datePaid: 'Date paid is required' },
+						message: 'Invalid Inputs!'
+					};
+					return false;
+				}
+			}
 			const res = await update('invoices/' + route.params.id, item.value);
 
 			if (!error.value) {

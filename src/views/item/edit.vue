@@ -93,19 +93,6 @@
 									:required="false"
 								/>
 							</div>
-							<div class="mb-3 col-6">
-								<BaseInputField
-									id="quantity"
-									label="Quantity"
-									v-model="item.quantity"
-									:error="error"
-									:errorField="
-										error?.errors?.quantity || null
-									"
-									placeholder="Ex. ABC"
-									:required="true"
-								/>
-							</div>
 						</div>
 						<div class="row">
 							<div class="col-12">

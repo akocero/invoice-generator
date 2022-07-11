@@ -33,7 +33,10 @@
 						<tr v-for="item in data" :key="item._id">
 							<td>{{ item.code }}</td>
 							<td>{{ item.discountKind }}</td>
-							<td>{{ item.discountValue }}</td>
+							<td v-if="item.discountKind === 'percent'">
+								{{ item.discountValue }}%
+							</td>
+							<td v-else>₱{{ item.discountValue }}</td>
 							<td>
 								{{
 									moment(item.createdAt).format('MM/DD/YYYY')

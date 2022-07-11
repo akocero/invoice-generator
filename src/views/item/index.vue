@@ -18,7 +18,6 @@
 							<th scope="col">Name</th>
 							<th scope="col">Description</th>
 							<th scope="col">Unit Cost</th>
-							<th scope="col">Quantity</th>
 							<th scope="col">Actions</th>
 						</tr>
 					</thead>
@@ -34,7 +33,6 @@
 							<td>{{ item.name }}</td>
 							<td>{{ item.description }}</td>
 							<td>{{ item.unitCost }}</td>
-							<td>{{ item.quantity }}</td>
 							<td>
 								<router-link
 									class="btn btn-sm btn-outline-secondary"

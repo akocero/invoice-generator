@@ -93,19 +93,6 @@
 									:required="false"
 								/>
 							</div>
-							<div class="mb-3 col-6">
-								<BaseInputField
-									id="quantity"
-									label="Quantity"
-									v-model="quantity"
-									:error="error"
-									:errorField="
-										error?.errors?.quantity || null
-									"
-									placeholder="Ex. ABC"
-									:required="true"
-								/>
-							</div>
 						</div>
 						<div class="row">
 							<div class="col-12">
@@ -158,8 +145,7 @@ export default {
 			const data = {
 				unitCost: unitCost.value,
 				name: name.value,
-				description: description.value,
-				quantity: quantity.value
+				description: description.value
 			};
 
 			const res = await create('items', data);
