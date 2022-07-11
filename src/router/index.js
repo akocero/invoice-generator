@@ -152,4 +152,9 @@ const router = createRouter({
 	routes
 });
 
+router.beforeEach((to, from, next) => {
+	document.title = `Papier Renei Accounting System`;
+	next();
+});
+
 export default router;

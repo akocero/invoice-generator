@@ -1,8 +1,8 @@
 <template>
 	<nav class="navbar navbar-expand-lg navbar-light bg-white">
 		<div class="container-fluid">
-			<router-link to="/" class="navbar-brand"
-				><strong>papierenei</strong>
+			<router-link to="/" class="navbar-brand">
+				<img src="../assets/logo.png" alt="" width="30" height="30" />
 			</router-link>
 			<button
 				class="navbar-toggler"
