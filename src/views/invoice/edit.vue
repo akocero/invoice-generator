@@ -516,7 +516,10 @@ export default {
 				} else {
 					console.log(item.value.status, item.value.datePaid);
 					error.value = {
-						errors: { datePaid: 'Date paid is required' },
+						errors: {
+							datePaid:
+								'Date paid is required when status is paid'
+						},
 						message: 'Invalid Inputs!'
 					};
 					return false;
