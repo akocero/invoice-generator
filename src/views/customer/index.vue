@@ -34,7 +34,11 @@
 							<td>{{ item.email }}</td>
 							<td>{{ item.lastName }}, {{ item.firstName }}</td>
 							<td>{{ item.mobileNumber }}</td>
-							<td>{{ item.createdAt }}</td>
+							<td>
+								{{
+									moment(item.createdAt).format('MM/DD/YYYY')
+								}}
+							</td>
 							<td>
 								<router-link
 									class="btn btn-sm btn-outline-secondary"
@@ -58,6 +62,7 @@
 import { ref, onBeforeMount } from 'vue';
 // import { router-link } from "vue-router"
 import useFetch from '@/composables/useFetch';
+import moment from 'moment';
 
 export default {
 	components: {},
@@ -79,7 +84,8 @@ export default {
 			error,
 			isPending,
 			search,
-			fetchAll
+			fetchAll,
+			moment
 		};
 	}
 };

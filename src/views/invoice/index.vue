@@ -39,9 +39,7 @@
 							<td>{{ item.invoiceFor.name }}</td>
 							<td>
 								{{
-									moment(item.createdAt).format(
-										'MMMM Do YYYY'
-									)
+									moment(item.createdAt).format('MM/DD/YYYY')
 								}}
 							</td>
 							<td>
