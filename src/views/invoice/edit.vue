@@ -97,11 +97,6 @@
 										"
 										placeholder="Ex. ABC"
 										:required="false"
-										:disabled="
-											item.status === 'paid'
-												? true
-												: false
-										"
 									/>
 								</div>
 								<div class="mt-3 col-12">
