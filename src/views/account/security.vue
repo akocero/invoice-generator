@@ -9,45 +9,67 @@
 					<div
 						class="d-flex justify-content-between align-items-baseline"
 					>
-						<h5 class="card-title mb-4">Account Info</h5>
+						<h5 class="card-title mb-4">Security Info</h5>
 						<router-link
 							class="btn btn-default"
-							:to="{ name: 'customers' }"
+							:to="{ name: 'home' }"
 							>Back</router-link
 						>
 					</div>
 					<div
-						v-if="isAccounInfoChanged"
+						v-if="isAccounSecurityChanged"
 						class="alert alert-info"
 						role="alert"
 					>
-						Account info successfully changed, please try to
-						re-login to see changes!
+						Password successfully changed, the system will logged
+						you out in 3 seconds!
 					</div>
 					<div v-if="error" class="alert alert-danger" role="alert">
 						{{ error.message }}
 					</div>
-					<form @submit.prevent="handleSubmit" v-if="item">
+					<form @submit.prevent="handleSubmit">
 						<div class="row">
 							<div class="mb-3 col-6">
 								<BaseInputField
-									id="name"
-									label="Name"
-									v-model="item.name"
+									id="password"
+									type="password"
+									label="Current Password"
+									v-model="password"
 									:error="error"
-									:errorField="error?.errors?.name || null"
+									:errorField="
+										error?.errors?.password || null
+									"
+									placeholder="Ex. ABC"
+									:required="true"
+								/>
+							</div>
+							<div class="mt-3 col-12">
+								<h6>New Password Info.</h6>
+							</div>
+							<div class="mb-3 col-6">
+								<BaseInputField
+									id="newPassword"
+									type="password"
+									label="New Password"
+									v-model="newPassword"
+									:error="error"
+									:errorField="
+										error?.errors?.newPassword || null
+									"
 									placeholder="Ex. ABC"
 									:required="true"
 								/>
 							</div>
 							<div class="mb-3 col-6">
 								<BaseInputField
-									id="input_code"
-									type="email"
-									label="Email"
-									v-model="item.email"
+									id="passwordConfirm"
+									type="password"
+									label="Password Confirm"
+									v-model="passwordConfirm"
 									:error="error"
-									:errorField="error?.errors?.email || null"
+									:errorField="
+										error?.errors?.passwordConfirm || null
+									"
 									placeholder="Ex. ABC"
 									:required="true"
 								/>
@@ -57,7 +79,7 @@
 							<div class="col-12">
 								<input
 									class="btn btn-success"
-									value="Save Changes"
+									value="Submit"
 									type="submit"
 									v-if="!loading"
 								/>
@@ -84,6 +106,7 @@ import { onBeforeRouteLeave, useRouter, useRoute } from 'vue-router';
 import BaseInputField from '@/components/BaseInputField';
 import BaseTextAreaField from '@/components/BaseTextAreaField';
 import getItem from '@/composables/getItem';
+import { useStore } from 'vuex';
 
 export default {
 	components: {
@@ -92,41 +115,51 @@ export default {
 	},
 	setup() {
 		const route = useRoute();
-		const { item, error: errorData, load } = getItem('', 'auth/me');
 		const router = useRouter();
+		const store = useStore();
 		const { response, error, update, loading, unknownError } = useData();
-		const isAccounInfoChanged = ref(false);
-
-		onBeforeMount(async () => {
-			await load();
-
-			console.log(item.value);
-		});
+		const isAccounSecurityChanged = ref(false);
+		const newPassword = ref('');
+		const password = ref('');
+		const passwordConfirm = ref('');
+		onBeforeMount(async () => {});
 
 		const handleSubmit = async () => {
 			error.value = null;
 
-			console.log(item.value);
+			const data = {
+				password: password.value,
+				newPassword: newPassword.value,
+				passwordConfirm: passwordConfirm.value
+			};
 
-			const res = await update('auth/updateMe', item.value);
+			const res = await update('auth/updatePassword', data);
 
 			if (!error.value) {
 				// router.push({
 				// 	name: 'customers'
 				// });
-				isAccounInfoChanged.value = true;
+				isAccounSecurityChanged.value = true;
+
+				setTimeout(() => {
+					store.commit('removeUser');
+					store.commit('removeToken');
+					window.location.reload();
+				}, 4000);
 			} else {
-				// isAccounInfoChanged.value = true;
+				// isAccounSecurityChanged.value = true;
 				// pushAlert("error", "Invalid Inputs");
 			}
 		};
 
 		return {
-			item,
 			handleSubmit,
 			error,
 			loading,
-			isAccounInfoChanged
+			isAccounSecurityChanged,
+			newPassword,
+			password,
+			passwordConfirm
 		};
 	}
 };

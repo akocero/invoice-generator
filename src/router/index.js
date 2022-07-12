@@ -133,6 +133,22 @@ const routes = [
 					import(
 						/* webpackChunkName: "about" */ '../views/discount/edit.vue'
 					)
+			},
+			{
+				path: 'account',
+				name: 'account',
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/account/index.vue'
+					)
+			},
+			{
+				path: 'account/security',
+				name: 'security',
+				component: () =>
+					import(
+						/* webpackChunkName: "about" */ '../views/account/security.vue'
+					)
 			}
 		]
 	},

@@ -60,19 +60,25 @@
 							data-bs-toggle="dropdown"
 							aria-expanded="false"
 						>
-							Account
+							{{ user.name }}
 						</button>
 						<ul
 							class="dropdown-menu"
 							aria-labelledby="navbarDropdown"
 						>
 							<li>
-								<a class="dropdown-item" href="#"
-									>Account Info</a
+								<router-link
+									:to="{ name: 'account' }"
+									class="dropdown-item"
+									>Account Info</router-link
 								>
 							</li>
 							<li>
-								<a class="dropdown-item" href="#">Security</a>
+								<router-link
+									:to="{ name: 'security' }"
+									class="dropdown-item"
+									>Security</router-link
+								>
 							</li>
 							<li><hr class="dropdown-divider" /></li>
 							<li>
