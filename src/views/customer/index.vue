@@ -28,7 +28,18 @@
 					<thead>
 						<tr>
 							<th scope="col">Email</th>
-							<th scope="col">Customer Name</th>
+							<th scope="col">
+								<span style="margin-right: 8px"
+									>Customer Name</span
+								>
+								<span @click="sort"
+									><i
+										v-html="iconUp"
+										v-if="sortByFirstName"
+									></i>
+									<i v-html="iconDown" v-else></i
+								></span>
+							</th>
 							<th scope="col">Mobile No.</th>
 							<th scope="col">Created At</th>
 							<th scope="col">Actions</th>
@@ -75,12 +86,26 @@ import { ref, onBeforeMount, computed } from 'vue';
 // import { router-link } from "vue-router"
 import useFetch from '@/composables/useFetch';
 import moment from 'moment';
+import feather from 'feather-icons';
 
 export default {
 	components: {},
+	computed: {
+		iconUp: function () {
+			return feather.icons['chevron-up'].toSvg({
+				width: 18
+			});
+		},
+		iconDown: function () {
+			return feather.icons['chevron-down'].toSvg({
+				width: 18
+			});
+		}
+	},
 	setup() {
 		const { data, error, fetch, isPending } = useFetch();
 		const search = ref('');
+		const sortByFirstName = ref(false);
 
 		onBeforeMount(() => {
 			fetchAll();
@@ -89,6 +114,32 @@ export default {
 		const fetchAll = () => {
 			search.value = '';
 			fetch('customers');
+		};
+
+		const sort = () => {
+			data.value.sort((a, b) => {
+				let fa = a.lastName.toLowerCase(),
+					fb = b.lastName.toLowerCase();
+				if (sortByFirstName.value) {
+					if (fa < fb) {
+						return -1;
+					}
+					if (fa > fb) {
+						return 1;
+					}
+				} else {
+					if (fa < fb) {
+						return 1;
+					}
+					if (fa > fb) {
+						return -1;
+					}
+				}
+
+				return 0;
+			});
+
+			sortByFirstName.value = !sortByFirstName.value;
 		};
 
 		const filteredData = computed(() => {
@@ -124,7 +175,9 @@ export default {
 			search,
 			fetchAll,
 			moment,
-			filteredData
+			filteredData,
+			sort,
+			sortByFirstName
 		};
 	}
 };
