@@ -421,13 +421,6 @@
 									<td><strong>Total</strong></td>
 									<td colspan="3">
 										{{ addedItemsTotal }}
-										<!-- <strong
-											>₱{{
-												numberWithCommas(
-													addedItemsTotal
-												)
-											}}</strong
-										> -->
 									</td>
 								</tr>
 							</tbody>
@@ -496,6 +489,7 @@ export default {
 				: undefined;
 			console.log(item.value.dueDate);
 			await loadDiscounts('discounts');
+			getTotal();
 		});
 
 		const handleSubmit = async () => {
