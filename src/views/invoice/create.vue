@@ -341,16 +341,13 @@
 								</tr>
 
 								<tr v-if="addedItems.length">
-									<td><strong>Total</strong></td>
+									<td colspan="3"><strong>Total</strong></td>
 									<td colspan="10">
-										{{ addedItemsTotal }}
-										<!-- <strong
-											>₱{{
-												numberWithCommas(
-													addedItemsTotal
-												)
-											}}</strong
-										> -->
+										<span class="text-success"
+											><strong>{{
+												addedItemsTotal
+											}}</strong>
+										</span>
 									</td>
 								</tr>
 							</tbody>
