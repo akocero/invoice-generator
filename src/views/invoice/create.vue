@@ -342,7 +342,7 @@
 
 								<tr v-if="addedItems.length">
 									<td><strong>Total</strong></td>
-									<td colspan="3">
+									<td colspan="10">
 										{{ addedItemsTotal }}
 										<!-- <strong
 											>₱{{
