@@ -4,8 +4,8 @@
 			<div class="col-5">
 				<h2>Papier Renei</h2>
 				<p>
-					Blk 0 Lot 0 Phase 0Francisco Homes-Mulawin City of San Jose
-					del Monte Bulacan, 3023 639200000000
+					Blk 16 Lot 5 Phase E1A Francisco Homes-Mulawin City of San
+					Jose del Monte Bulacan, 3023 09266151516
 				</p>
 
 				<h1>Invoice</h1>
@@ -43,14 +43,20 @@
 				<label for="">Due date:</label>
 				<p>{{ moment(item.dueDate).format('MM/DD/YYYY') }}</p>
 				<label for="">Status:</label>
-				<p>{{ item.status }}</p>
+				<p class="pb-0 text-uppercase">
+					<span class="text-warning">{{ item.status }}</span> <br />
+					<span v-if="item.status === 'paid'" class="pt-0">
+						{{ moment(item.datePaid).format('MM/DD/YYYY') }}
+					</span>
+					<span v-else class="pt-0">TO BE PAID</span>
+				</p>
 			</div>
 		</div>
 		<table class="table mt-3">
 			<thead>
 				<tr>
 					<th scope="col" style="width: 5%">#</th>
-					<th scope="col">Description</th>
+					<th scope="col">Item Name</th>
 					<th scope="col" style="width: 20%">Qty</th>
 					<th scope="col" style="width: 20%">Unit price</th>
 					<th scope="col" style="width: 20%">Total price</th>
@@ -119,7 +125,8 @@
 			</tbody>
 		</table>
 		<div class="row">
-			<p>Note:</p>
+			<p v-if="!item.notes">Note:</p>
+			<p v-if="item.notes">Note: <br />{{ item.notes }}</p>
 		</div>
 		<div class="row pt-2">
 			<p>Mode of Payment:</p>
@@ -127,14 +134,14 @@
 				<p>GCash</p>
 				<p>
 					Reneilda D <br />
-					0920 000 0000
+					0926 615 1516
 				</p>
 			</div>
 			<div class="col">
 				<p>BPI Family Savings</p>
 				<p>
 					Reneilda de Leon <br />
-					0920 000 0000
+					2289 3651 87
 				</p>
 			</div>
 		</div>
@@ -222,7 +229,7 @@ export default {
 #print-table {
 	padding: 2rem;
 	color: #6eccff !important;
-
+	font-size: 0.9rem;
 	font-family: 'Comfortaa';
 }
 

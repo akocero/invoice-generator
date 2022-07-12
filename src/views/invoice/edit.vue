@@ -487,7 +487,7 @@ export default {
 			}
 
 			if (item.value.status === 'paid') {
-				disableStatus.value = true;
+				disableStatus.value = false;
 			}
 
 			item.value.dueDate = item.value.dueDate.substring(0, 10);

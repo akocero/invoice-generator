@@ -22,6 +22,7 @@
 							<th scope="col">Invoice No</th>
 							<th scope="col">Invoice For</th>
 							<th scope="col">Created At</th>
+							<th scope="col">Updated At</th>
 							<th scope="col">Status</th>
 							<th scope="col">Date Paid</th>
 							<th scope="col">Actions</th>
@@ -44,6 +45,11 @@
 								}}
 							</td>
 							<td>
+								{{
+									moment(item.updatedAt).format('MM/DD/YYYY')
+								}}
+							</td>
+							<td>
 								<span
 									class="badge rounded-pill bg-warning"
 									v-if="item.status === 'unsettled'"
@@ -61,13 +67,9 @@
 								>
 							</td>
 							<td v-if="item.status === 'paid'">
-								{{
-									moment(item.createdAt).format('MM/DD/YYYY')
-								}}
+								{{ moment(item.datePaid).format('MM/DD/YYYY') }}
 							</td>
-							<td v-else>
-								TO BE PAID
-							</td>
+							<td v-else>TO BE PAID</td>
 							<td>
 								<router-link
 									class="btn btn-sm btn-outline-secondary"
