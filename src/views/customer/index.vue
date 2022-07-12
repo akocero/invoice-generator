@@ -28,10 +28,8 @@
 					<thead>
 						<tr>
 							<th scope="col">Email</th>
-							<th scope="col">
-								<span style="margin-right: 8px"
-									>Customer Name</span
-								>
+							<th scope="col" class="table-sort">
+								Customer Name
 								<span @click="sort('lastName')"
 									><i
 										v-html="iconUp"
