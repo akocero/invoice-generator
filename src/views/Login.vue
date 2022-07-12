@@ -1,10 +1,13 @@
 <template>
-	<div
-		class="card p-4 border-0 mx-auto"
-		style="width: 36rem; margin-top: 5rem"
-	>
+	<div class="auth-container">
+		<div class="auth-image"><img src="../assets/logo_t.png" alt="" /></div>
+	</div>
+	<div class="card p-4 border-0 mx-auto" style="width: 22%; margin-top: 1rem">
 		<form @submit.prevent="handleSubmit">
-			<h3>Login</h3>
+			<div class="text-center py-4">
+				<h5 class="tex-center">Log in to your account</h5>
+			</div>
+
 			<div v-if="error" class="alert alert-danger" role="alert">
 				{{ error.message }}
 			</div>
@@ -72,3 +75,13 @@ export default {
 	}
 };
 </script>
+<style>
+.auth-image {
+	max-width: 12%;
+	margin: 0 auto;
+}
+
+.auth-image img {
+	width: 100%;
+}
+</style>
