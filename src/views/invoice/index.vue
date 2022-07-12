@@ -26,7 +26,7 @@
 						placeholder="Type any item in the table below"
 					/>
 				</div>
-				<table class="table">
+				<table class="table invoice-table">
 					<thead>
 						<tr>
 							<th scope="col">Invoice No</th>
@@ -200,6 +200,9 @@ export default {
 
 <style>
 @media print {
+	.invoice-table {
+		display: none;
+	}
 	body * {
 		visibility: hidden;
 	}
