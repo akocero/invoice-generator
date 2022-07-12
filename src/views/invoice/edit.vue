@@ -405,14 +405,16 @@
 								<tr v-for="i in addedItems" :key="i.id">
 									<th scope="row">{{ i.name }}</th>
 									<td>{{ i.qty }}</td>
-									<td>₱{{ i.unitPrice }}</td>
-									<td>₱{{ i.unitPrice * i.qty }}</td>
+									<td>₱{{ numberFormat(i.unitPrice) }}</td>
+									<td>
+										₱{{ numberFormat(i.unitPrice * i.qty) }}
+									</td>
 									<td>
 										<button
 											class="btn btn-sm btn-outline-secondary"
 											@click="deleteAddedItem(i.name)"
 										>
-											Delete
+											<!-- <i v-html="iconDelete"></i> -->Delete
 										</button>
 									</td>
 								</tr>
@@ -421,9 +423,13 @@
 									<td colspan="3"><strong>Total</strong></td>
 									<td colspan="10">
 										<span class="text-success"
-											><strong>{{
-												addedItemsTotal
-											}}</strong>
+											><strong
+												>₱{{
+													numberFormat(
+														addedItemsTotal
+													)
+												}}</strong
+											>
 										</span>
 									</td>
 								</tr>
@@ -447,12 +453,30 @@ import BaseSelectField from '@/components/BaseSelectField';
 import { onBeforeMount } from '@vue/runtime-core';
 import getItem from '@/composables/getItem';
 import moment from 'moment';
+import feather from 'feather-icons';
 
 export default {
 	components: {
 		BaseInputField,
 		BaseTextAreaField,
 		BaseSelectField
+	},
+	computed: {
+		iconDelete: function () {
+			return feather.icons['trash'].toSvg({
+				width: 18
+			});
+		},
+		iconDown: function () {
+			return feather.icons['chevron-down'].toSvg({
+				width: 18
+			});
+		},
+		iconEdit: function () {
+			return feather.icons['edit'].toSvg({
+				width: 16
+			});
+		}
 	},
 	setup() {
 		const router = useRouter();
@@ -608,6 +632,12 @@ export default {
 			}
 		});
 
+		const numberFormat = (value) => {
+			return Number(parseFloat(value).toFixed(2)).toLocaleString('en', {
+				minimumFractionDigits: 2
+			});
+		};
+
 		return {
 			handleSubmit,
 			item,
@@ -625,7 +655,8 @@ export default {
 			invoiceFor,
 			discounts,
 			discount,
-			disableStatus
+			disableStatus,
+			numberFormat
 		};
 	}
 };

@@ -328,8 +328,10 @@
 								<tr v-for="i in addedItems" :key="i.id">
 									<th scope="row">{{ i.name }}</th>
 									<td>{{ i.qty }}</td>
-									<td>₱{{ i.unitPrice }}</td>
-									<td>₱{{ i.unitPrice * i.qty }}</td>
+									<td>₱{{ numberFormat(i.unitPrice) }}</td>
+									<td>
+										₱{{ numberFormat(i.unitPrice * i.qty) }}
+									</td>
 									<td>
 										<button
 											class="btn btn-sm btn-outline-secondary"
@@ -344,9 +346,13 @@
 									<td colspan="3"><strong>Total</strong></td>
 									<td colspan="10">
 										<span class="text-success"
-											><strong>{{
-												addedItemsTotal
-											}}</strong>
+											><strong
+												>₱{{
+													numberFormat(
+														addedItemsTotal
+													)
+												}}</strong
+											>
 										</span>
 									</td>
 								</tr>
@@ -522,6 +528,12 @@ export default {
 			getTotal();
 		};
 
+		const numberFormat = (value) => {
+			return Number(parseFloat(value).toFixed(2)).toLocaleString('en', {
+				minimumFractionDigits: 2
+			});
+		};
+
 		return {
 			handleSubmit,
 			invoiceFor,
@@ -544,7 +556,8 @@ export default {
 			selectedDiscount,
 			errorItems,
 			invoiceNo,
-			dueDate
+			dueDate,
+			numberFormat
 		};
 	}
 };
