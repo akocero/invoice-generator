@@ -12,6 +12,18 @@
 						>Add New</router-link
 					>
 				</div>
+				<div class="mb-3">
+					<label for="exampleFormControlInput1" class="form-label"
+						>Search</label
+					>
+					<input
+						type="text"
+						v-model="search"
+						class="form-control"
+						id="search"
+						placeholder="Type any item in the table below"
+					/>
+				</div>
 				<table class="table">
 					<thead>
 						<tr>
@@ -30,7 +42,7 @@
 						</tr>
 					</tbody>
 					<tbody v-if="!isPending">
-						<tr v-for="item in data" :key="item._id">
+						<tr v-for="item in filteredData" :key="item._id">
 							<td>{{ item.email }}</td>
 							<td>{{ item.lastName }}, {{ item.firstName }}</td>
 							<td>{{ item.mobileNumber }}</td>
@@ -59,7 +71,7 @@
 </template>
 
 <script>
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, computed } from 'vue';
 // import { router-link } from "vue-router"
 import useFetch from '@/composables/useFetch';
 import moment from 'moment';
@@ -79,13 +91,40 @@ export default {
 			fetch('customers');
 		};
 
+		const filteredData = computed(() => {
+			console.log(search.value);
+			if (data.value?.length) {
+				return data.value.filter((item) => {
+					return (
+						item.firstName
+							.toLowerCase()
+							.match(search.value.toLowerCase()) ||
+						item.lastName
+							.toLowerCase()
+							.match(search.value.toLowerCase()) ||
+						item.email
+							.toLowerCase()
+							.match(search.value.toLowerCase()) ||
+						item.mobileNumber
+							.toLowerCase()
+							.match(search.value.toLowerCase()) ||
+						moment(item.createdAt)
+							.format('MM/DD/YYYY')
+							.toLowerCase()
+							.match(search.value.toLowerCase())
+					);
+				});
+			}
+		});
+
 		return {
 			data,
 			error,
 			isPending,
 			search,
 			fetchAll,
-			moment
+			moment,
+			filteredData
 		};
 	}
 };
