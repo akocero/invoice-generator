@@ -41,7 +41,7 @@
 					</tbody>
 					<tbody v-if="!isPending">
 						<tr v-for="item in filteredData" :key="item._id">
-							<td>{{ item.sku }}</td>
+							<td>{{ item.sku ? item.sku : 'N/A' }}</td>
 							<td>{{ item.name }}</td>
 							<td>{{ item.description }}</td>
 							<td>₱{{ numberFormat(item.unitCost) }}</td>
