@@ -79,24 +79,26 @@
 							<td v-if="item.status === 'paid'">
 								{{ moment(item.datePaid).format('MM/DD/YYYY') }}
 							</td>
-							<td v-else>TO BE PAID</td>
+							<td v-else>
+								<span class="text-danger">TO BE PAID</span>
+							</td>
 							<td>
 								<router-link
-									class="btn btn-sm btn-outline-secondary"
+									class="btn btn-sm btn-default"
 									:to="{
 										name: 'edit-invoice',
 										params: { id: item._id }
 									}"
 								>
-									Edit
+									<i v-html="iconEdit"></i>
 								</router-link>
 								<button
 									@click="print(item)"
 									v-if="!isPrinting"
-									class="btn btn-sm btn-outline-secondary"
+									class="btn btn-sm btn-default"
 									style="margin-left: 4px"
 								>
-									Print
+									<i v-html="iconPrinter"></i>
 								</button>
 								<button
 									v-if="isPrinting"
@@ -114,6 +116,7 @@
 </template>
 
 <script>
+import feather from 'feather-icons';
 import { ref, onBeforeMount, computed } from 'vue';
 // import { router-link } from "vue-router"
 import useFetch from '@/composables/useFetch';
@@ -123,6 +126,18 @@ import moment from 'moment';
 export default {
 	components: {
 		Print
+	},
+	computed: {
+		iconPrinter: function () {
+			return feather.icons['printer'].toSvg({
+				width: 16
+			});
+		},
+		iconEdit: function () {
+			return feather.icons['edit'].toSvg({
+				width: 16
+			});
+		}
 	},
 	setup() {
 		const { data, error, fetch, isPending } = useFetch();

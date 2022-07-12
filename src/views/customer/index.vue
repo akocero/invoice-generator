@@ -32,10 +32,10 @@
 								<span style="margin-right: 8px"
 									>Customer Name</span
 								>
-								<span @click="sort"
+								<span @click="sort('lastName')"
 									><i
 										v-html="iconUp"
-										v-if="sortByFirstName"
+										v-if="sortByLastName"
 									></i>
 									<i v-html="iconDown" v-else></i
 								></span>
@@ -64,13 +64,13 @@
 							</td>
 							<td>
 								<router-link
-									class="btn btn-sm btn-outline-secondary"
+									class="btn btn-sm btn-default"
 									:to="{
 										name: 'edit-customer',
 										params: { id: item._id }
 									}"
 								>
-									Edit
+									<i v-html="iconEdit"></i>
 								</router-link>
 							</td>
 						</tr>
@@ -100,12 +100,17 @@ export default {
 			return feather.icons['chevron-down'].toSvg({
 				width: 18
 			});
+		},
+		iconEdit: function () {
+			return feather.icons['edit'].toSvg({
+				width: 16
+			});
 		}
 	},
 	setup() {
 		const { data, error, fetch, isPending } = useFetch();
 		const search = ref('');
-		const sortByFirstName = ref(false);
+		const sortByLastName = ref(false);
 
 		onBeforeMount(() => {
 			fetchAll();
@@ -116,11 +121,11 @@ export default {
 			fetch('customers');
 		};
 
-		const sort = () => {
+		const sort = (by) => {
 			data.value.sort((a, b) => {
-				let fa = a.lastName.toLowerCase(),
-					fb = b.lastName.toLowerCase();
-				if (sortByFirstName.value) {
+				let fa = a[by].toLowerCase(),
+					fb = b[by].toLowerCase();
+				if (sortByLastName.value) {
 					if (fa < fb) {
 						return -1;
 					}
@@ -139,7 +144,7 @@ export default {
 				return 0;
 			});
 
-			sortByFirstName.value = !sortByFirstName.value;
+			sortByLastName.value = !sortByLastName.value;
 		};
 
 		const filteredData = computed(() => {
@@ -177,7 +182,7 @@ export default {
 			moment,
 			filteredData,
 			sort,
-			sortByFirstName
+			sortByLastName
 		};
 	}
 };
