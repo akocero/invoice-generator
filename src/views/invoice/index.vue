@@ -16,6 +16,16 @@
 						>Add New</router-link
 					>
 				</div>
+				<div class="mb-3">
+					<label class="form-label">Search</label>
+					<input
+						type="text"
+						v-model="search"
+						class="form-control"
+						id="search"
+						placeholder="Type any item in the table below"
+					/>
+				</div>
 				<table class="table">
 					<thead>
 						<tr>
@@ -36,7 +46,7 @@
 						</tr>
 					</tbody>
 					<tbody v-if="!isPending">
-						<tr v-for="item in data" :key="item._id">
+						<tr v-for="item in filteredData" :key="item._id">
 							<td>{{ item.invoiceNo }}</td>
 							<td>{{ item.invoiceFor.name }}</td>
 							<td>
@@ -104,7 +114,7 @@
 </template>
 
 <script>
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, computed } from 'vue';
 // import { router-link } from "vue-router"
 import useFetch from '@/composables/useFetch';
 import Print from '@/components/invoice/Print.vue';
@@ -141,6 +151,37 @@ export default {
 			return true;
 		};
 
+		const filteredData = computed(() => {
+			console.log(search.value);
+			if (data.value?.length) {
+				return data.value.filter((item) => {
+					return (
+						item.invoiceFor.name
+							.toLowerCase()
+							.match(search.value.toLowerCase()) ||
+						item.status
+							.toLowerCase()
+							.match(search.value.toLowerCase()) ||
+						item.invoiceNo
+							.toLowerCase()
+							.match(search.value.toLowerCase()) ||
+						moment(item.createdAt)
+							.format('MM/DD/YYYY')
+							.toLowerCase()
+							.match(search.value.toLowerCase()) ||
+						moment(item.udpatedAt)
+							.format('MM/DD/YYYY')
+							.toLowerCase()
+							.match(search.value.toLowerCase()) ||
+						moment(item.datePaid)
+							.format('MM/DD/YYYY')
+							.toLowerCase()
+							.match(search.value.toLowerCase())
+					);
+				});
+			}
+		});
+
 		return {
 			data,
 			error,
@@ -150,7 +191,8 @@ export default {
 			print,
 			isPrinting,
 			printData,
-			moment
+			moment,
+			filteredData
 		};
 	}
 };

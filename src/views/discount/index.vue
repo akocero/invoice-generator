@@ -12,6 +12,16 @@
 						>Add New</router-link
 					>
 				</div>
+				<div class="mb-3">
+					<label class="form-label">Search</label>
+					<input
+						type="text"
+						v-model="search"
+						class="form-control"
+						id="search"
+						placeholder="Type any item in the table below"
+					/>
+				</div>
 				<table class="table">
 					<thead>
 						<tr>
@@ -30,7 +40,7 @@
 						</tr>
 					</tbody>
 					<tbody v-if="!isPending">
-						<tr v-for="item in data" :key="item._id">
+						<tr v-for="item in filteredData" :key="item._id">
 							<td>{{ item.code }}</td>
 							<td>{{ item.discountKind }}</td>
 							<td v-if="item.discountKind === 'percent'">
@@ -62,7 +72,7 @@
 </template>
 
 <script>
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, computed } from 'vue';
 // import { router-link } from "vue-router"
 import useFetch from '@/composables/useFetch';
 import moment from 'moment';
@@ -81,13 +91,35 @@ export default {
 			fetch('discounts');
 		};
 
+		const filteredData = computed(() => {
+			console.log(search.value);
+			if (data.value?.length) {
+				return data.value.filter((item) => {
+					return (
+						item.code
+							.toLowerCase()
+							.match(search.value.toLowerCase()) ||
+						item.discountKind
+							.toLowerCase()
+							.match(search.value.toLowerCase()) ||
+						item.discountValue.toString().match(search.value) ||
+						moment(item.createdAt)
+							.format('MM/DD/YYYY')
+							.toLowerCase()
+							.match(search.value.toLowerCase())
+					);
+				});
+			}
+		});
+
 		return {
 			data,
 			error,
 			isPending,
 			search,
 			fetchAll,
-			moment
+			moment,
+			filteredData
 		};
 	}
 };

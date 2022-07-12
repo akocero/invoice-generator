@@ -44,7 +44,17 @@
 				<p>{{ moment(item.dueDate).format('MM/DD/YYYY') }}</p>
 				<label for="">Status:</label>
 				<p class="pb-0 text-uppercase">
-					<span class="text-warning">{{ item.status }}</span> <br />
+					<span
+						:class="
+							item.status === 'paid'
+								? 'text-success'
+								: item.status === 'unsettled'
+								? 'text-custom-warning'
+								: 'text-danger'
+						"
+						>{{ item.status }}</span
+					>
+					<br />
 					<span v-if="item.status === 'paid'" class="pt-0">
 						{{ moment(item.datePaid).format('MM/DD/YYYY') }}
 					</span>
@@ -265,5 +275,9 @@ export default {
 
 .table > :not(:first-child) {
 	border-top: 0px solid black;
+}
+
+.text-custom-warning {
+	color: #d49a06 !important;
 }
 </style>
