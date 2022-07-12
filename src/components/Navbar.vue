@@ -53,6 +53,38 @@
 					</li>
 				</ul>
 				<ul class="navbar-nav">
+					<div class="nav-item dropstart">
+						<button
+							type="button"
+							class="btn dropdown-toggle"
+							data-bs-toggle="dropdown"
+							aria-expanded="false"
+						>
+							Account
+						</button>
+						<ul
+							class="dropdown-menu"
+							aria-labelledby="navbarDropdown"
+						>
+							<li>
+								<a class="dropdown-item" href="#"
+									>Account Info</a
+								>
+							</li>
+							<li>
+								<a class="dropdown-item" href="#">Security</a>
+							</li>
+							<li><hr class="dropdown-divider" /></li>
+							<li>
+								<a
+									class="dropdown-item text-danger"
+									href="#"
+									@click="logout"
+									>Logout</a
+								>
+							</li>
+						</ul>
+					</div>
 					<li class="nav-item" v-if="!user">
 						<router-link to="/signup" class="nav-link"
 							>Sign Up</router-link
@@ -62,15 +94,6 @@
 						<router-link to="/login" class="nav-link"
 							>Log In</router-link
 						>
-					</li>
-					<li class="nav-item">
-						<a
-							class="nav-link text-danger"
-							role="button"
-							@click="logout"
-						>
-							Logout
-						</a>
 					</li>
 				</ul>
 			</div>
