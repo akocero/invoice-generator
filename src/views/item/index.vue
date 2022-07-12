@@ -56,7 +56,9 @@
 							<td>{{ item.sku ? item.sku : 'N/A' }}</td>
 							<td>{{ item.name }}</td>
 							<td>{{ item.description }}</td>
-							<td>₱{{ numberFormat(item.unitCost) }}</td>
+							<td style="width: 10%">
+								₱{{ numberFormat(item.unitCost) }}
+							</td>
 							<td>
 								<router-link
 									class="btn btn-sm"
