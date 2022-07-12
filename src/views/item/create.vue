@@ -21,47 +21,24 @@
 					</div>
 					<form @submit.prevent="handleSubmit">
 						<div class="row">
-							<!-- <div class="mb-3 col-6">
-								<label for="" class="form-label"
-									>Customers</label
-								>
-								<select
-									class="form-select"
-									aria-label="Default select example"
-									required
-									v-model="customer"
-								>
-									<option selected value="">Select...</option>
-
-									<option
-										:value="itemCustomer.id"
-										v-for="itemCustomer in customers"
-										:key="itemCustomer.id"
-									>
-										{{ itemCustomer.name }}
-									</option>
-								</select>
-							</div> -->
-
 							<div class="mb-3 col-6">
-								<!-- <label
-									for="exampleFormControlInput1"
-									class="form-label"
-									>First Name</label
-								>
-								<input
-									v-model="name"
-									type="text"
-									class="form-control"
-									id="exampleFormControlInput1"
-								/> -->
-
 								<BaseInputField
 									id="name"
 									label="Item Name"
 									v-model="name"
 									:error="error"
 									:errorField="error?.errors?.name || null"
+									placeholder="Ex. ABC"
+									:required="true"
+								/>
+							</div>
+							<div class="mb-3 col-6">
+								<BaseInputField
+									id="sku"
+									label="SKU"
+									v-model="sku"
+									:error="error"
+									:errorField="error?.errors?.sku || null"
 									placeholder="Ex. ABC"
 									:required="true"
 								/>
@@ -138,6 +115,7 @@ export default {
 		const name = ref('');
 		const description = ref('');
 		const quantity = ref('');
+		const sku = ref('');
 
 		const handleSubmit = async () => {
 			error.value = null;
@@ -145,6 +123,7 @@ export default {
 			const data = {
 				unitCost: unitCost.value,
 				name: name.value,
+				sku: sku.value,
 				description: description.value
 			};
 
@@ -164,6 +143,7 @@ export default {
 			unitCost,
 			name,
 			description,
+			sku,
 			quantity,
 			error,
 			loading

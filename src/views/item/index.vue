@@ -25,6 +25,7 @@
 				<table class="table">
 					<thead>
 						<tr>
+							<th scope="col">SKU</th>
 							<th scope="col">Name</th>
 							<th scope="col">Description</th>
 							<th scope="col">Unit Cost</th>
@@ -40,9 +41,10 @@
 					</tbody>
 					<tbody v-if="!isPending">
 						<tr v-for="item in filteredData" :key="item._id">
+							<td>{{ item.sku }}</td>
 							<td>{{ item.name }}</td>
 							<td>{{ item.description }}</td>
-							<td>{{ item.unitCost }}</td>
+							<td>₱{{ numberFormat(item.unitCost) }}</td>
 							<td>
 								<router-link
 									class="btn btn-sm btn-outline-secondary"
@@ -104,6 +106,12 @@ export default {
 			}
 		});
 
+		const numberFormat = (value) => {
+			return Number(parseFloat(value).toFixed(2)).toLocaleString('en', {
+				minimumFractionDigits: 2
+			});
+		};
+
 		return {
 			data,
 			error,
@@ -111,7 +119,8 @@ export default {
 			search,
 			fetchAll,
 			filteredData,
-			moment
+			moment,
+			numberFormat
 		};
 	}
 };

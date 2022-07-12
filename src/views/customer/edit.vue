@@ -72,17 +72,7 @@
 									:required="false"
 								/>
 							</div>
-							<div class="mb-3 col-6">
-								<BaseInputField
-									id="city"
-									label="City"
-									v-model="item.city"
-									:error="error"
-									:errorField="error?.errors?.city || null"
-									placeholder="Ex. "
-									:required="false"
-								/>
-							</div>
+
 							<div class="mb-3 col-6">
 								<BaseInputField
 									id="state"
@@ -90,6 +80,17 @@
 									v-model="item.state"
 									:error="error"
 									:errorField="error?.errors?.state || null"
+									placeholder="Ex. "
+									:required="false"
+								/>
+							</div>
+							<div class="mb-3 col-6">
+								<BaseInputField
+									id="city"
+									label="City"
+									v-model="item.city"
+									:error="error"
+									:errorField="error?.errors?.city || null"
 									placeholder="Ex. "
 									:required="false"
 								/>

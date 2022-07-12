@@ -46,7 +46,9 @@
 							<td v-if="item.discountKind === 'percent'">
 								{{ item.discountValue }}%
 							</td>
-							<td v-else>₱{{ item.discountValue }}</td>
+							<td v-else>
+								₱{{ numberFormat(item.discountValue) }}
+							</td>
 							<td>
 								{{
 									moment(item.createdAt).format('MM/DD/YYYY')
@@ -112,6 +114,12 @@ export default {
 			}
 		});
 
+		const numberFormat = (value) => {
+			return Number(parseFloat(value).toFixed(2)).toLocaleString('en', {
+				minimumFractionDigits: 2
+			});
+		};
+
 		return {
 			data,
 			error,
@@ -119,7 +127,8 @@ export default {
 			search,
 			fetchAll,
 			moment,
-			filteredData
+			filteredData,
+			numberFormat
 		};
 	}
 };

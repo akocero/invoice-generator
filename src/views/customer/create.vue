@@ -108,17 +108,6 @@
 							</div>
 							<div class="mb-3 col-6">
 								<BaseInputField
-									id="city"
-									label="City"
-									v-model="city"
-									:error="error"
-									:errorField="error?.errors?.city || null"
-									placeholder="Ex. "
-									:required="false"
-								/>
-							</div>
-							<div class="mb-3 col-6">
-								<BaseInputField
 									id="state"
 									label="State"
 									v-model="state"
@@ -128,6 +117,18 @@
 									:required="false"
 								/>
 							</div>
+							<div class="mb-3 col-6">
+								<BaseInputField
+									id="city"
+									label="City"
+									v-model="city"
+									:error="error"
+									:errorField="error?.errors?.city || null"
+									placeholder="Ex. "
+									:required="false"
+								/>
+							</div>
+
 							<div class="mb-3 col-6">
 								<BaseInputField
 									id="zipCode"

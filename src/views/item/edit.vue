@@ -21,47 +21,24 @@
 					</div>
 					<form @submit.prevent="handleSubmit" v-if="item">
 						<div class="row">
-							<!-- <div class="mb-3 col-6">
-								<label for="" class="form-label"
-									>Customers</label
-								>
-								<select
-									class="form-select"
-									aria-label="Default select example"
-									required
-									v-model="item.customer"
-								>
-									<option selected value="">Select...</option>
-
-									<option
-										:value="itemCustomer.id"
-										v-for="itemCustomer in customers"
-										:key="itemCustomer.id"
-									>
-										{{ itemCustomer.name }}
-									</option>
-								</select>
-							</div> -->
-
 							<div class="mb-3 col-6">
-								<!-- <label
-									for="exampleFormControlInput1"
-									class="form-label"
-									>First Name</label
-								>
-								<input
-									v-model="item.name"
-									type="text"
-									class="form-control"
-									id="exampleFormControlInput1"
-								/> -->
-
 								<BaseInputField
 									id="name"
 									label="Item Name"
 									v-model="item.name"
 									:error="error"
 									:errorField="error?.errors?.name || null"
+									placeholder="Ex. ABC"
+									:required="true"
+								/>
+							</div>
+							<div class="mb-3 col-6">
+								<BaseInputField
+									id="sku"
+									label="SKU"
+									v-model="item.sku"
+									:error="error"
+									:errorField="error?.errors?.sku || null"
 									placeholder="Ex. ABC"
 									:required="true"
 								/>
